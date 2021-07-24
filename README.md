@@ -1,11 +1,9 @@
 # BepInEx.UnityInput
 
-Adds a Harmony hooks so that BepInEx plugins may intercept Unity's Global Input system.
+Adds Harmony hooks so that BepInEx plugins may intercept Unity's Global Input system.
 
-Development for this largely stems from interest of extending functionality of Illusion games, 
-such as Koikatsu, which extensively make use of `UnityEngine.Input` in places where by best 
-practice it shouldn't.  In areas where you wish to use original game functionality and through the 
-simulation of button presses on the UI, you may need to occasionally force an Input state.
+Development for this largely stems from interest of extending functionality of Illusion games, such as Koikatsu, which extensively make use of `UnityEngine.Input` in places where by best practice it shouldn't.  
+In areas where you wish to use original game functionality through the simulation of button presses on the UI, you may need to occasionally fake an Input state.
 
 ## Requirements
 
@@ -55,7 +53,8 @@ namespace MyPlugin
                 var index = Random.RandomRangeInt(0, choices.Count);
                 var nextAction = choices[index];
 
-                // koikatsu actions check for left click mouse up
+                // many koikatsu actions check for left click mouse up 
+                // within their onClick handler
                 InputSimulator.MouseButtonUp(0);
                 // perform our action
                 nextAction?.onClick?.Invoke();
