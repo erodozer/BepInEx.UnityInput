@@ -34,6 +34,13 @@
     <WarningLevel>4</WarningLevel>
     <DebugSymbols>false</DebugSymbols>
   </PropertyGroup>
+  <PropertyGroup>
+    <RestoreAdditionalProjectSources>
+      https://api.nuget.org/v3/index.json;
+      https://pkgs.dev.azure.com/bepinex/BepInEx/_packaging/BepInExLibs/nuget/v3/index.json;
+      $(MSBuildThisFileDirectory)/../References/
+    </RestoreAdditionalProjectSources>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
     <PackageReference Include="BepInEx.Core" Version="5.4.0" targetFramework="net35" />
