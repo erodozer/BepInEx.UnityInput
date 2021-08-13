@@ -12,11 +12,10 @@ namespace BepInEx.Unity
         Held,
     }
 
-    [BepInPlugin(GUID, "BepInEx.UnityInput", Version)]
+    [BepInPlugin(GUID, "BepInEx.UnityInput", VersionInfo.Version)]
     public class InputSimulator : BaseUnityPlugin
     {
         public const string GUID = "github.lunared.bepinex.unityinput";
-        public const string Version = "0.2.0";
 
         public static new PluginInfo Info { get; private set; }
 

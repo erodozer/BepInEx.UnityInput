@@ -1,0 +1,69 @@
+name: Manual release
+
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'Release version'
+        required: true
+
+jobs:
+  release:
+    runs-on: windows-2019
+    timeout-minutes: 5
+    
+    env:
+      ACTIONS_ALLOW_UNSECURE_COMMANDS: true
+    
+    steps:
+    - uses: actions/checkout@v1
+      name: Checkout Code
+    
+    - name: Setup MSBuild Path
+      uses: warrenbuckley/Setup-MSBuild@v1
+      
+    - name: Setup NuGet
+      uses: NuGet/setup-nuget@v1.0.2
+
+    - name: Restore NuGet Packages 
+      run: nuget restore ${{ github.event.repository.name }}.sln
+      
+    - name: Build and Publish
+      run: msbuild ${{ github.event.repository.name }}.sln /p:Configuration=Release /p:DeployOnBuild=true /p:PublishProfile=FolderProfile /p:Version=${{ github.event.inputs.version }}
+    
+    - name: Create Release
+      id: create_release
+      uses: actions/create-release@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        tag_name: v${{ github.event.inputs.version }}
+        release_name: Release v${{ github.event.inputs.version }}
+        body: ''
+        draft: true
+        prerelease: false
+
+    - name: Zip Artifacts
+      run: |-
+        powershell New-Item -Path BepInEx/plugins -ItemType Directory;
+        powershell Copy-Item -Path bin/* -Destination BepInEx/plugins;
+        powershell Compress-Archive -Path BepInEx -DestinationPath ${{ github.event.repository.name }}.zip
+
+    - name: Upload Artifacts
+      uses: actions/upload-release-asset@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: ${{ steps.create_release.outputs.upload_url }}
+        asset_path: ./${{ github.event.repository.name }}.zip
+        asset_name:  ${{ github.event.repository.name }}.zip
+        asset_content_type: application/octet-stream
+
+    - name: Publish NuGet Packages
+      run: |
+        powershell New-Item -Path lib/net35 -ItemType Directory;
+        powershell Copy-Item -Path bin/*.dll -Destination lib/net35;
+        nuget pack -Version ${{ github.event.inputs.version }}
+        nuget setApiKey ${{ secrets.NUGET_API_KEY }} -Source https://nuget.pkg.github.com/${{ github.repository_owner }}/index.json
+        nuget sources add -Name ${{ github.repository_owner }} -Source https://nuget.pkg.github.com/${{ github.repository_owner }}/index.json -Username ${{ github.repository_owner }} -Password ${{ secrets.NUGET_API_KEY }} -StorePasswordInClearText
+        nuget push BepInEx.UnityInput.${{ github.event.inputs.version }}.nupkg -Source https://nuget.pkg.github.com/${{ github.repository_owner }}/index.json
