@@ -1,0 +1,55 @@
+<?xml version="1.0"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
+    <metadata>
+        <!-- Identifier that must be unique within the hosting gallery -->
+        <id>BepInEx.UnityInput</id>
+
+        <!-- Package version number that is used when resolving dependencies -->
+        <version>0.0.0</version>
+
+        <!-- Authors contain text that appears directly on the gallery -->
+        <authors>nhydock</authors>
+
+        <!-- 
+            Owners are typically nuget.org identities that allow gallery
+            users to easily find other packages by the same owners.  
+        -->
+        <owners>nhydock</owners>
+        
+         <!-- Project URL provides a link for the gallery -->
+        <projectUrl>https://github.com/nhydock/BepInEx.UnityInput</projectUrl>
+
+         <!-- License information is displayed on the gallery -->
+        <license type="expression">MIT</license>
+        
+        <!-- 
+            If true, this value prompts the user to accept the license when
+            installing the package. 
+        -->
+        <requireLicenseAcceptance>false</requireLicenseAcceptance>
+
+        <!-- 
+            The description can be used in package manager UI. Note that the
+            nuget.org gallery uses information you add in the portal. 
+        -->
+        <description>Basic Harmony Hooks to allow plugins to override Unity's Global Input responses</description>
+
+        <!-- Copyright information -->
+        <copyright>2021</copyright>
+
+        <dependencies>
+            <group targetFramework=".NETFramework3.5" />
+        </dependencies>
+
+        <!-- Tags appear in the gallery and can be used for tag searches -->
+        <tags>bepinex</tags>
+        
+        <repository type="git" url="https://github.com/nhydock/BepInEx.UnityInput" />
+    </metadata>
+
+    
+    <!-- A readme.txt to display when the package is installed -->
+    <files>
+        <file src="lib\net35\BepInEx.UnityInput.dll" target="lib\net35\BepInEx.UnityInput.dll" />
+    </files>
+</package>

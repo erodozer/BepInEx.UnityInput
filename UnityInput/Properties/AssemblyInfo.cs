@@ -7,4 +7,4 @@ using System.Runtime.InteropServices;
 
 [assembly: ComVisible(false)]
 
-[assembly: AssemblyVersion(BepInEx.Unity.InputSimulator.Version)]
+[assembly: AssemblyVersion(BepInEx.Unity.VersionInfo.Version)]
