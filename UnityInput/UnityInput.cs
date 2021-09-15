@@ -35,7 +35,7 @@ namespace BepInEx.Unity
 
         public static KeyCode StrToKeyCode(string name)
         {
-            return (KeyCode)System.Enum.Parse(typeof(KeyCode), name);
+            return (KeyCode)System.Enum.Parse(typeof(KeyCode), name, ignoreCase: true);
         }
 
         private static class Triggers
